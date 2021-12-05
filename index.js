@@ -24,9 +24,9 @@ app.get('/challenges', async (req, res) =>{
         //connect to the db
         await client.connect();
 
-        //retrieve the boardgame collection data
+        //retrieve the challenges collection data
         const colli = client.db('Challenge').collection('challenges');
-        const bgs = await colli.find({}).toArray();
+        const chs = await colli.find({}).toArray();
 
         //Send back the data with the response
         res.status(200).send(chs);
