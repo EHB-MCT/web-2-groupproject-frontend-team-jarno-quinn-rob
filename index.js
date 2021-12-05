@@ -43,36 +43,36 @@ app.get('/challenges', async (req, res) =>{
 
 // /challenges/:id
 app.get('/challenges/:id', async (req,res) => {
-    //id is located in the query: req.query.id
-    // try{
-    //     //connect to the db
-    //     await client.connect();
+    //id is located in the query: req.params.id
+    try{
+        //connect to the db
+        await client.connect();
 
-    //     //retrieve the boardgame collection data
-    //     const colli = client.db('session5').collection('boardgames');
+        //retrieve the boardgame collection data
+        const colli = client.db('Challenge').collection('boardgames');
 
-    //     //only look for a bg with this ID
-    //     const query = { bggid: req.query.id };
+        //only look for a challenge with this ID
+        const query = { bggid: req.query.id };
 
-    //     const bg = await colli.findOne(query);
+        const bg = await colli.findOne(query);
 
-    //     if(bg){
-    //         //Send back the file
+        if(bg){
+            //Send back the file
             res.status(200).send('ID OK');
-    //         return;
-    //     }else{
-    //         res.status(400).send('Boardgame could not be found with id: ' + req.query.id);
-    //     }
+            return;
+        }else{
+            res.status(400).send('Boardgame could not be found with id: ' + req.query.id);
+        }
       
-    // }catch(error){
-    //     console.log(error);
-    //     res.status(500).send({
-    //         error: 'Something went wrong',
-    //         value: error
-    //     });
-    // }finally {
-    //     await client.close();
-    // }
+    }catch(error){
+        console.log(error);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
+    }finally {
+        await client.close();
+    }
 });
 
 // save a boardgame
