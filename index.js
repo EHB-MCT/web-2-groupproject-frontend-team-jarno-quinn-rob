@@ -25,11 +25,11 @@ app.get('/challenges', async (req, res) =>{
         await client.connect();
 
         //retrieve the boardgame collection data
-        const colli = client.db('groupproject').collection('challenges');
+        const colli = client.db('Challenge').collection('challenges');
         const bgs = await colli.find({}).toArray();
 
         //Send back the data with the response
-    res.status(200).send(chs);
+        res.status(200).send(chs);
     }catch(error){
         console.log(error)
         res.status(500).send({
