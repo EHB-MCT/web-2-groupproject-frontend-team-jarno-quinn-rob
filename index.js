@@ -20,25 +20,25 @@ app.get('/', (req, res) => {
 // Return all challenges from the database
 app.get('/challenges', async (req, res) =>{
 
-    // try{
-    //     //connect to the db
-    //     await client.connect();
+    try{
+        //connect to the db
+        await client.connect();
 
-    //     //retrieve the boardgame collection data
-    //     const colli = client.db('session5').collection('boardgames');
-    //     const bgs = await colli.find({}).toArray();
+        //retrieve the boardgame collection data
+        const colli = client.db('groupproject').collection('challenges');
+        const bgs = await colli.find({}).toArray();
 
-    //     //Send back the data with the response
-        res.status(200).send('OK');
-    // }catch(error){
-    //     console.log(error)
-    //     res.status(500).send({
-    //         error: 'Something went wrong',
-    //         value: error
-    //     });
-    // }finally {
-    //     await client.close();
-    // }
+        //Send back the data with the response
+    res.status(200).send(chs);
+    }catch(error){
+        console.log(error)
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
+    }finally {
+        await client.close();
+    }
 });
 
 // /challenges/:id
