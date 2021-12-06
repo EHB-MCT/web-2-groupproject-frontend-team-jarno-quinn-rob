@@ -52,16 +52,16 @@ app.get('/challenges/:id', async (req,res) => {
         const colli = client.db('Challenge').collection('boardgames');
 
         //only look for a challenge with this ID
-        const query = { bggid: req.query.id };
+        const query = { _id: req.params.id };
 
-        const bg = await colli.findOne(query);
+        const challenge = await colli.findOne(query);
 
-        if(bg){
+        if(challenge){
             //Send back the file
-            res.status(200).send('ID OK');
+            res.status(200).send(challenge);
             return;
         }else{
-            res.status(400).send('Boardgame could not be found with id: ' + req.query.id);
+            res.status(400).send('Challenge could not be found with id: ' + req.params.id);
         }
       
     }catch(error){
