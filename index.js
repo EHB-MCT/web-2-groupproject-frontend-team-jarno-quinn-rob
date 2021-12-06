@@ -133,7 +133,7 @@ app.delete('/challenges/:id', async (req,res) => {
         //only look for a challenge with this ID
         const query = { _id: ObjectId(req.params.id) };
 
-        const challenge = await colli.removeById(query);
+        const challenge = await colli.removeOne(query);
 
         if(challenge){
             //Send back the file
