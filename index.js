@@ -120,6 +120,40 @@ app.post('/challenges', async (req, res) => {
     }
 });
 
+// delete challenge
+app.delete('/challenges/:id', async (req,res) => {
+    //id is located in the query: req.params.id
+    try{
+        //connect to the db
+        await client.connect();
+
+        //retrieve the challenge collection data
+        const colli = client.db('Challenge').collection('challenges');
+
+        //only look for a challenge with this ID
+        const query = { _id: ObjectId(req.params.id) };
+
+        const challenge = await colli.removeById(query);
+
+        if(challenge){
+            //Send back the file
+            res.status(200).send(challenge);
+            return;
+        }else{
+            res.status(400).send('err');
+        }
+      
+    }catch(error){
+        console.log(error);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
+    }finally {
+        await client.close();
+    }
+});
+
 
 
 app.listen(port, () => {
