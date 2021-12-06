@@ -49,7 +49,7 @@ app.get('/challenges/:id', async (req,res) => {
         await client.connect();
 
         //retrieve the boardgame collection data
-        const colli = client.db('Challenge').collection('boardgames');
+        const colli = client.db('Challenge').collection('challenges');
 
         //only look for a challenge with this ID
         const query = { _id: ObjectId(req.params.id) };
