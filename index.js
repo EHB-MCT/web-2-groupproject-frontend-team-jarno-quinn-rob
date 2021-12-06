@@ -48,7 +48,7 @@ app.get('/challenges/:id', async (req,res) => {
         //connect to the db
         await client.connect();
 
-        //retrieve the boardgame collection data
+        //retrieve the challenge collection data
         const colli = client.db('Challenge').collection('challenges');
 
         //only look for a challenge with this ID
@@ -75,52 +75,49 @@ app.get('/challenges/:id', async (req,res) => {
     }
 });
 
-// save a boardgame
-app.post('/saveBoardgame', async (req, res) => {
+// save a challenge
+app.post('/challenges', async (req, res) => {
 
-    // if(!req.body.bggid || !req.body.name || !req.body.genre || !req.body.mechanisms
-    //     || !req.body.description){
-    //     res.status(400).send('Bad request: missing id, name, genre, mechanisms or description');
-    //     return;
-    // }
+    if(!req.body.name || !req.body.points || !req.body.course){
+        res.status(400).send('Bad request: missing name, points or course');
+        return;
+    }
 
-    // try{
-    //     //connect to the db
-    //     await client.connect();
+    try{
+        //connect to the db
+        await client.connect();
 
-    //     //retrieve the boardgame collection data
-    //     const colli = client.db('session5').collection('boardgames');
+        //retrieve the challenge collection data
+        const colli = client.db('Challenge').collection('challenges');
 
-    //     // Validation for double boardgames
-    //     const bg = await colli.findOne({bggid: req.body.bggid});
-    //     if(bg){
-    //         res.status(400).send('Bad request: boardgame already exists with bggid ' + req.body.bggid);
-    //         return;
-    //     } 
-    //     // Create the new boardgame object
-    //     let newBoardgame = {
-    //         bggid: req.body.bggid,
-    //         name: req.body.name,
-    //         genre: req.body.genre,
-    //         mechanisms: req.body.mechanisms,
-    //         description: req.body.description
-    //     }
+        // Validation for double challenges
+        const challenge = await colli.findOne({name: req.body.name, points: req.body.points, course: req.body.course});
+        if(challenge){
+            res.status(400).send('Bad request: challenge already exists with ' + 'name ' + req.body.name + 'points ' + req.body.points + 'cousre ' + req.body.course);
+            return;
+        } 
+        // Create the new challenge object
+        let newChallenge = {
+            name: req.body.name,
+            points: req.body.points,
+            course: req.body.course
+        }
         
-    //     // Insert into the database
-    //     let insertResult = await colli.insertOne(newBoardgame);
+        // Insert into the database
+        let insertResult = await colli.insertOne(newChallenge);
 
-    //     //Send back successmessage
-    //     res.status(201).send(`Boardgame succesfully saved with id ${req.body.bggid}`);
-    //     return;
-    // }catch(error){
-    //     console.log(error);
-    //     res.status(500).send({
-    //         error: 'Something went wrong',
-    //         value: error
-    //     });
-    // }finally {
-    //     await client.close();
-    // }
+        //Send back successmessage
+        res.status(201).json(newChallenge);
+        return;
+    }catch(error){
+        console.log(error);
+        res.status(500).send({
+            error: 'Something went wrong',
+            value: error
+        });
+    }finally {
+        await client.close();
+    }
 });
 
 
