@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 //Create the mongo client to use
 const client = new MongoClient(process.env.MONGO_URL);
@@ -52,7 +52,7 @@ app.get('/challenges/:id', async (req,res) => {
         const colli = client.db('Challenge').collection('boardgames');
 
         //only look for a challenge with this ID
-        const query = { _id: req.params.id };
+        const query = { _id: ObjectId(req.params.id) };
 
         const challenge = await colli.findOne(query);
 
